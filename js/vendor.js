@@ -159,6 +159,14 @@ async function loadVendorData() {
         renderVendorListings(pets);
     } catch (error) {
         console.error('Error loading vendor data:', error);
+
+        // Handle Role Mismatch
+        if (error.message && (error.message.includes('not authorized') || error.message.includes('Forbidden'))) {
+            alert('Access Denied: You are logged in with an account (Doctor/Customer) that is not authorized for this Vendor Dashboard.\n\nPlease login as a Vendor.');
+            handleLogout();
+            return;
+        }
+
         renderVendorListings([]);
     }
 }
@@ -323,6 +331,14 @@ async function savePet(petData, editId) {
         loadVendorData();
     } catch (error) {
         console.error('Error saving pet:', error);
+
+        // Handle Role Mismatch
+        if (error.message && (error.message.includes('not authorized') || error.message.includes('Forbidden'))) {
+            alert('Access Denied: You are logged in with an account that is not authorized to add pets.\n\nPlease login as a Vendor.');
+            handleLogout();
+            return;
+        }
+
         showNotification('Failed to save pet. Please try again.', 'error');
     }
 }
