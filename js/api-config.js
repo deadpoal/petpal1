@@ -2,8 +2,12 @@
 // API Configuration and Helper Functions
 // ===================================
 
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
 const API_CONFIG = {
-    BASE_URL: 'http://localhost:5000/api',
+    // If running locally, use localhost. Otherwise, use the production backend URL.
+    // REPLACE 'https://petpal-244j.onrender.com/api' with your actual new backend URL after deploying to Render.
+    BASE_URL: isLocal ? 'http://localhost:5000/api' : 'https://petpal-244j.onrender.com/api',
     TIMEOUT: 10000
 };
 
