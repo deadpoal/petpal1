@@ -4,9 +4,9 @@ services:
     runtime: node
     region: singapore
     plan: free
-    rootDirectory: backend
-    buildCommand: npm install
-    startCommand: npm start
+    # Removing rootDirectory and using explicit cd commands to avoid schema errors
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
     envVars:
       - key: MONGODB_URI
         sync: false
