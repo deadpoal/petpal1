@@ -1,0 +1,22 @@
+{
+    "name": "petpal-app",
+    "version": "1.0.0",
+    "description": "Online Pet Selling Application - Beautiful frontend for buying pets, pet food, and vet consultations",
+    "main": "index.html",
+    "scripts": {
+        "dev": "npx -y live-server --port=3000 --open=index.html",
+        "start": "npm run dev",
+        "preview": "npx -y http-server -p 3000 -o"
+    },
+    "keywords": [
+        "pet-store",
+        "e-commerce",
+        "pets",
+        "vet-consultation"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "mongodb": "^7.0.0"
+    }
+}

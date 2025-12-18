@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Cache - PetPal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            margin: 10px;
+            cursor: pointer;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #d32f2f;
+        }
+
+        .success {
+            color: #4CAF50;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🧹 Clear Browser Cache</h1>
+    <p>Click the button below to clear all old localStorage data and fix the blinking issue.</p>
+
+    <button onclick="clearCache()">Clear All Cache & Reload</button>
+
+    <div id="result"></div>
+
+    <script>
+        function clearCache() {
+            // Clear all localStorage
+            localStorage.clear();
+
+            // Show success message
+            document.getElementById('result').innerHTML = '<p class="success">✅ Cache cleared! Redirecting to login...</p>';
+
+            // Redirect to login page after 1 second
+            setTimeout(() => {
+                window.location.href = 'customer-login.html';
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>

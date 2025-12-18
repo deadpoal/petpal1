@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Dashboard - PetPal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/vendor.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PetPal Vendor</span>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-secondary" onclick="window.location.href='index.html'">View Store</button>
+                <button class="btn-primary" id="vendorLogout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Vendor Auth (shown if not logged in) -->
+    <div class="vendor-auth" id="vendorAuth">
+        <div class="container">
+            <div class="auth-container">
+                <h1>Vendor Portal</h1>
+                <p class="subtitle">Start selling pets on PetPal marketplace</p>
+
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="register">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="vendorLoginForm" class="vendor total-auth-form active">
+                    <h2>Vendor Login</h2>
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn-primary btn-large" style="width: 100%;">Login</button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="vendorRegisterForm" class="vendor-auth-form">
+                    <h2>Vendor Registration</h2>
+                    <div class="form-group">
+                        <label for="regBusinessName">Business/Shop Name *</label>
+                        <input type="text" id="regBusinessName" required placeholder="Enter your business name">
+                    </div>
+                    <div class="form-group">
+                        <label for="regOwnerName">Owner Name *</label>
+                        <input type="text" id="regOwnerName" required placeholder="Enter owner name">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email *</label>
+                        <input type="email" id="regEmail" required placeholder="Enter email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhone">Phone Number *</label>
+                        <input type="tel" id="regPhone" required placeholder="Enter phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="regAddress">Business Address *</label>
+                        <textarea id="regAddress" required placeholder="Enter complete business address"
+                            rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Password *</label>
+                        <input type="password" id="regPassword" required placeholder="Create a password">
+                    </div>
+                    <button type="submit" class="btn-primary btn-large" style="width: 100%;">Register as Vendor</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vendor Dashboard (shown if logged in) -->
+    <div class="vendor-dashboard" id="vendorDashboard" style="display: none;">
+        <div class="container">
+            <div class="dashboard-header">
+                <div>
+                    <h1>Welcome, <span id="vendorName">Vendor</span>!</h1>
+                    <p class="subtitle">Manage your pet listings</p>
+                </div>
+                <button class="btn-primary" id="addPetBtn">+ Add New Pet</button>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🐾</div>
+                    <div class="stat-info">
+                        <h3 id="totalPets">0</h3>
+                        <p>Total Listings</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <h3 id="activePets">0</h3>
+                        <p>Active</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <h3 id="totalRevenue">₹0</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Listings -->
+            <div class="listings-section">
+                <h2>My Pet Listings</h2>
+                <div class="listings-grid" id="vendorListings">
+                    <p class="empty-message">No pets listed yet. Click "+ Add New Pet" to get started!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Pet Modal -->
+    <div class="add-pet-modal" id="addPetModal">
+        <div class="add-pet-modal-content">
+            <button class="close-btn" id="closePetModal">&times;</button>
+            <h2 id="petModalTitle">Add New Pet</h2>
+            <form id="addPetForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="petName">Pet Name *</label>
+                        <input type="text" id="petName" required placeholder="e.g., Bruno">
+                    </div>
+                    <div class="form-group">
+                        <label for="petBreed">Breed *</label>
+                        <input type="text" id="petBreed" required placeholder="e.g., Golden Retriever">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="petAge">Age *</label>
+                        <input type="text" id="petAge" required placeholder="e.g., 3 months">
+                    </div>
+                    <div class="form-group">
+                        <label for="petGender">Gender *</label>
+                        <select id="petGender" required>
+                            <option value="">Select gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="petCategory">Category *</label>
+                        <select id="petCategory" required>
+                            <option value="">Select category</option>
+                            <option value="Dog">Dog</option>
+                            <option value="Cat">Cat</option>
+                            <option value="Bird">Bird</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="petPrice">Price (₹) *</label>
+                        <input type="number" id="petPrice" required placeholder="e.g., 25000">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="petDescription">Description *</label>
+                    <textarea id="petDescription" required
+                        placeholder="Describe the pet, health status, temperament, etc." rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="petImage">Pet Image *</label>
+                    <input type="file" id="petImage" accept="image/*" required>
+                    <small>Upload a clear photo of the pet</small>
+                    <div id="imagePreview" class="image-preview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="petVaccinated">
+                        <span>Vaccinated</span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelPetBtn">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Pet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api-config.js"></script>
+    <script src="js/vendor.js"></script>
+</body>
+
+</html>

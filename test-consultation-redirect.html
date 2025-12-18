@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Quick Test - Consultation Redirect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🧪 Consultation Redirect Test</h1>
+
+    <h2>Test 1: Check if TokenManager exists</h2>
+    <button onclick="test1()">Test TokenManager</button>
+    <div id="result1" class="result"></div>
+
+    <h2>Test 2: Check if token exists</h2>
+    <button onclick="test2()">Check Token</button>
+    <div id="result2" class="result"></div>
+
+    <h2>Test 3: Test redirect function</h2>
+    <button onclick="test3()">Test Redirect Logic</button>
+    <div id="result3" class="result"></div>
+
+    <h2>Test 4: Direct redirect to login</h2>
+    <button onclick="window.location.href='customer-login.html'">Go to Login Page</button>
+
+    <script src="js/api-config.js?v=1001"></script>
+    <script>
+        function test1() {
+            const result = document.getElementById('result1');
+            if (typeof TokenManager !== 'undefined') {
+                result.innerHTML = '✅ TokenManager EXISTS!';
+                result.style.background = '#d4edda';
+            } else {
+                result.innerHTML = '❌ TokenManager NOT FOUND!';
+                result.style.background = '#f8d7da';
+            }
+        }
+
+        function test2() {
+            const result = document.getElementById('result2');
+            try {
+                const token = TokenManager.getToken();
+                if (token) {
+                    result.innerHTML = `✅ Token EXISTS: ${token.substring(0, 50)}...`;
+                    result.style.background = '#d4edda';
+                } else {
+                    result.innerHTML = '⚠️ No token found (not logged in)';
+                    result.style.background = '#fff3cd';
+                }
+            } catch (error) {
+                result.innerHTML = `❌ Error: ${error.message}`;
+                result.style.background = '#f8d7da';
+            }
+        }
+
+        function test3() {
+            const result = document.getElementById('result3');
+            const token = TokenManager.getToken();
+
+            if (!token) {
+                result.innerHTML = 'No token found. Testing redirect...';
+                result.style.background = '#fff3cd';
+
+                setTimeout(() => {
+                    if (confirm('Please login to book a consultation. Click OK to go to login page.')) {
+                        window.location.href = 'customer-login.html';
+                    } else {
+                        result.innerHTML = 'You clicked Cancel. Redirect cancelled.';
+                    }
+                }, 500);
+            } else {
+                result.innerHTML = '✅ You are logged in! Redirect not needed.';
+                result.style.background = '#d4edda';
+            }
+        }
+    </script>
+</body>
+
+</html>

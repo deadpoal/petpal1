@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - PetPal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🧪 PetPal API Test</h1>
+
+    <h2>Test Backend Connection</h2>
+    <button onclick="testHealth()">Test Health Endpoint</button>
+    <button onclick="testLogin()">Test Login</button>
+    <button onclick="testPets()">Test Get Pets</button>
+
+    <div id="result"></div>
+
+    <script src="js/api-config.js"></script>
+    <script>
+        const resultDiv = document.getElementById('result');
+
+        async function testHealth() {
+            resultDiv.textContent = 'Testing health endpoint...';
+            resultDiv.className = '';
+
+            try {
+                const response = await fetch('http://localhost:5000/api/health');
+                const data = await response.json();
+                resultDiv.textContent = 'SUCCESS!\n\n' + JSON.stringify(data, null, 2);
+                resultDiv.className = 'success';
+            } catch (error) {
+                resultDiv.textContent = 'ERROR!\n\n' + error.message + '\n\n' + error.stack;
+                resultDiv.className = 'error';
+            }
+        }
+
+        async function testLogin() {
+            resultDiv.textContent = 'Testing login...';
+            resultDiv.className = '';
+
+            try {
+                const response = await AuthAPI.customerLogin('john@example.com', 'password123');
+                resultDiv.textContent = 'LOGIN SUCCESS!\n\n' + JSON.stringify(response, null, 2);
+                resultDiv.className = 'success';
+            } catch (error) {
+                resultDiv.textContent = 'LOGIN ERROR!\n\n' + error.message + '\n\nFull error:\n' + error.stack;
+                resultDiv.className = 'error';
+            }
+        }
+
+        async function testPets() {
+            resultDiv.textContent = 'Testing get pets...';
+            resultDiv.className = '';
+
+            try {
+                const response = await PetsAPI.getAll();
+                resultDiv.textContent = 'PETS SUCCESS!\n\nFound ' + response.data.length + ' pets\n\n' + JSON.stringify(response, null, 2);
+                resultDiv.className = 'success';
+            } catch (error) {
+                resultDiv.textContent = 'PETS ERROR!\n\n' + error.message + '\n\n' + error.stack;
+                resultDiv.className = 'error';
+            }
+        }
+    </script>
+</body>
+
+</html>

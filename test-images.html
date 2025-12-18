@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Test</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+
+        .image-preview {
+            width: 200px;
+            height: 200px;
+            border: 2px solid #ddd;
+            margin: 10px;
+            display: inline-block;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🖼️ Image Display Test</h1>
+
+    <div class="test-section">
+        <h2>Test 1: Check Database for Images</h2>
+        <button onclick="checkPets()">Check Pets</button>
+        <button onclick="checkFood()">Check Food</button>
+        <button onclick="checkDoctors()">Check Doctors</button>
+        <div id="dbResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Display Images</h2>
+        <button onclick="showPetImages()">Show Pet Images</button>
+        <button onclick="showFoodImages()">Show Food Images</button>
+        <div id="imageDisplay"></div>
+    </div>
+
+    <script src="js/api-config.js"></script>
+    <script>
+        async function checkPets() {
+            const result = document.getElementById('dbResult');
+            result.innerHTML = 'Loading...';
+
+            try {
+                const response = await PetsAPI.getAll();
+                const pets = response.data || [];
+                const withImages = pets.filter(p => p.imageData);
+
+                result.innerHTML = `
+                    <h3>Pets in Database:</h3>
+                    <p>Total: ${pets.length}</p>
+                    <p>With Images: ${withImages.length}</p>
+                    <p>Without Images: ${pets.length - withImages.length}</p>
+                    <pre>${JSON.stringify(pets.map(p => ({
+                    name: p.name,
+                    hasImage: !!p.imageData,
+                    imageLength: p.imageData ? p.imageData.length : 0
+                })), null, 2)}</pre>
+                `;
+            } catch (error) {
+                result.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function checkFood() {
+            const result = document.getElementById('dbResult');
+            result.innerHTML = 'Loading...';
+
+            try {
+                const response = await FoodAPI.getAll();
+                const food = response.data || [];
+                const withImages = food.filter(f => f.imageData);
+
+                result.innerHTML = `
+                    <h3>Food in Database:</h3>
+                    <p>Total: ${food.length}</p>
+                    <p>With Images: ${withImages.length}</p>
+                    <p>Without Images: ${food.length - withImages.length}</p>
+                    <pre>${JSON.stringify(food.map(f => ({
+                    name: f.name,
+                    hasImage: !!f.imageData,
+                    imageLength: f.imageData ? f.imageData.length : 0
+                })), null, 2)}</pre>
+                `;
+            } catch (error) {
+                result.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function checkDoctors() {
+            const result = document.getElementById('dbResult');
+            result.innerHTML = 'Loading...';
+
+            try {
+                const response = await ConsultationsAPI.getDoctors();
+                const doctors = response.data || [];
+                const withImages = doctors.filter(d => d.imageData);
+
+                result.innerHTML = `
+                    <h3>Doctors in Database:</h3>
+                    <p>Total: ${doctors.length}</p>
+                    <p>With Images: ${withImages.length}</p>
+                    <p>Without Images: ${doctors.length - withImages.length}</p>
+                    <pre>${JSON.stringify(doctors.map(d => ({
+                    name: d.name,
+                    hasImage: !!d.imageData
+                })), null, 2)}</pre>
+                `;
+            } catch (error) {
+                result.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function showPetImages() {
+            const display = document.getElementById('imageDisplay');
+            display.innerHTML = 'Loading...';
+
+            try {
+                const response = await PetsAPI.getAll();
+                const pets = response.data || [];
+
+                if (pets.length === 0) {
+                    display.innerHTML = '<p>No pets found in database!</p>';
+                    return;
+                }
+
+                display.innerHTML = '<h3>Pet Images:</h3>';
+                pets.forEach(pet => {
+                    const div = document.createElement('div');
+                    div.style.display = 'inline-block';
+                    div.style.margin = '10px';
+                    div.style.textAlign = 'center';
+
+                    if (pet.imageData) {
+                        div.innerHTML = `
+                            <div class="image-preview" style="background-image: url('${pet.imageData}'); background-size: cover;"></div>
+                            <p>${pet.name}</p>
+                            <small>Image: ✅ ${pet.imageData.substring(0, 30)}...</small>
+                        `;
+                    } else {
+                        div.innerHTML = `
+                            <div class="image-preview" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+                                <span>No Image</span>
+                            </div>
+                            <p>${pet.name}</p>
+                            <small>Image: ❌ Missing</small>
+                        `;
+                    }
+
+                    display.appendChild(div);
+                });
+            } catch (error) {
+                display.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function showFoodImages() {
+            const display = document.getElementById('imageDisplay');
+            display.innerHTML = 'Loading...';
+
+            try {
+                const response = await FoodAPI.getAll();
+                const food = response.data || [];
+
+                if (food.length === 0) {
+                    display.innerHTML = '<p>No food found in database!</p>';
+                    return;
+                }
+
+                display.innerHTML = '<h3>Food Images:</h3>';
+                food.forEach(item => {
+                    const div = document.createElement('div');
+                    div.style.display = 'inline-block';
+                    div.style.margin = '10px';
+                    div.style.textAlign = 'center';
+
+                    if (item.imageData) {
+                        div.innerHTML = `
+                            <div class="image-preview" style="background-image: url('${item.imageData}'); background-size: cover;"></div>
+                            <p>${item.name}</p>
+                            <small>Image: ✅</small>
+                        `;
+                    } else {
+                        div.innerHTML = `
+                            <div class="image-preview" style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+                                <span>No Image</span>
+                            </div>
+                            <p>${item.name}</p>
+                            <small>Image: ❌ Missing</small>
+                        `;
+                    }
+
+                    display.appendChild(div);
+                });
+            } catch (error) {
+                display.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+
+</html>

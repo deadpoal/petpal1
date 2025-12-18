@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Order Creation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🧪 Test Order Creation</h1>
+
+    <h2>Step 1: Login</h2>
+    <button onclick="testLogin()">Login as arun@gmail.com</button>
+
+    <h2>Step 2: Create Order</h2>
+    <button onclick="testCreateOrder()">Create Test Order</button>
+
+    <div id="result"></div>
+
+    <script src="js/api-config.js"></script>
+    <script>
+        const resultDiv = document.getElementById('result');
+
+        async function testLogin() {
+            resultDiv.textContent = 'Logging in...';
+            resultDiv.className = '';
+
+            try {
+                const response = await AuthAPI.customerLogin('arun@gmail.com', 'password');
+                resultDiv.textContent = 'LOGIN SUCCESS!\n\n' + JSON.stringify(response, null, 2);
+                resultDiv.className = 'success';
+            } catch (error) {
+                resultDiv.textContent = 'LOGIN ERROR!\n\n' + error.message;
+                resultDiv.className = 'error';
+            }
+        }
+
+        async function testCreateOrder() {
+            resultDiv.textContent = 'Creating order...';
+            resultDiv.className = '';
+
+            // Check if logged in
+            const token = TokenManager.getToken();
+            if (!token) {
+                resultDiv.textContent = 'ERROR: Not logged in! Please login first.';
+                resultDiv.className = 'error';
+                return;
+            }
+
+            try {
+                const orderData = {
+                    items: [{
+                        id: '507f1f77bcf86cd799439011',
+                        name: 'Test Pet',
+                        price: 25000,
+                        quantity: 1,
+                        type: 'pet'
+                    }],
+                    shippingDetails: {
+                        name: 'Arun Kumar',
+                        email: 'arun@gmail.com',
+                        phone: '6301701180',
+                        address: 'Test Address',
+                        city: 'Hyderabad',
+                        zipcode: '500001'
+                    },
+                    paymentMethod: 'upi',
+                    subtotal: 25000,
+                    shipping: 99,
+                    total: 25099
+                };
+
+                console.log('Sending order data:', orderData);
+
+                const response = await OrdersAPI.create(orderData);
+
+                console.log('Order response:', response);
+
+                if (response.success) {
+                    resultDiv.textContent = 'ORDER CREATED SUCCESSFULLY!\n\n' + JSON.stringify(response, null, 2);
+                    resultDiv.className = 'success';
+                } else {
+                    resultDiv.textContent = 'ORDER FAILED!\n\n' + JSON.stringify(response, null, 2);
+                    resultDiv.className = 'error';
+                }
+            } catch (error) {
+                console.error('Order creation error:', error);
+                resultDiv.textContent = 'ORDER ERROR!\n\n' + error.message + '\n\nFull error:\n' + error.stack;
+                resultDiv.className = 'error';
+            }
+        }
+    </script>
+</body>
+
+</html>

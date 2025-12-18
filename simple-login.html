@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Login Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+        }
+
+        input,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔐 Simple Login Test</h1>
+
+    <input type="email" id="email" placeholder="Email" value="john@example.com">
+    <input type="password" id="password" placeholder="Password" value="password123">
+    <button onclick="testLogin()">Login</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function testLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.textContent = 'Logging in...';
+            resultDiv.className = '';
+
+            try {
+                const response = await fetch('https://petpal-244j.onrender.com/api/auth/customer/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Save token
+                    localStorage.setItem('petpal_token', data.data.token);
+                    localStorage.setItem('petpal_currentCustomer', JSON.stringify(data.data));
+
+                    resultDiv.textContent = 'SUCCESS! Redirecting...';
+                    resultDiv.className = 'success';
+
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } else {
+                    resultDiv.textContent = 'ERROR: ' + (data.message || 'Login failed');
+                    resultDiv.className = 'error';
+                }
+            } catch (error) {
+                resultDiv.textContent = 'FETCH ERROR: ' + error.message + '\n\nMake sure backend is running on port 5000';
+                resultDiv.className = 'error';
+                console.error('Full error:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>

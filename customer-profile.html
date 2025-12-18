@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - PetPal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PetPal</span>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn-secondary" onclick="window.location.href='index.html'">Back to Home</button>
+                <button class="btn-primary" id="profileLogout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <section class="profile-page">
+        <div class="container">
+            <div class="profile-header-section">
+                <h1>My Profile</h1>
+                <p class="subtitle">Manage your account and view your order history</p>
+            </div>
+
+            <!-- Profile Information -->
+            <div class="profile-info-card">
+                <div class="card-header">
+                    <h2>Personal Information</h2>
+                    <button class="btn-secondary" id="editInfoBtn">Edit Profile</button>
+                </div>
+                <div class="info-grid" id="profileInfo">
+                    <div class="info-item">
+                        <span class="info-label">Full Name</span>
+                        <span class="info-value" id="profileName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email Address</span>
+                        <span class="info-value" id="profileEmail">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Phone Number</span>
+                        <span class="info-value" id="profilePhone">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Member Since</span>
+                        <span class="info-value" id="profileJoined">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order History -->
+            <div class="order-history-card">
+                <h2>Purchase History</h2>
+                <div class="orders-list" id="ordersList">
+                    <p class="empty-message">No orders yet</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Profile Modal -->
+    <div class="edit-modal" id="editModal">
+        <div class="edit-modal-content">
+            <button class="close-btn" id="closeEditModal">&times;</button>
+            <h2>Edit Profile</h2>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label for="editName">Full Name *</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Phone Number</label>
+                    <input type="tel" id="editPhone">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelEdit">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api-config.js?v=1002"></script>
+    <script src="js/profile.js?v=1002"></script>
+
+</body>
+
+</html>

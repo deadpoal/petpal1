@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - PetPal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/doctor.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PetPal Vet</span>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-secondary" onclick="window.location.href='index.html'">View Website</button>
+                <button class="btn-primary" id="doctorLogout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Doctor Auth (shown if not logged in) -->
+    <div class="doctor-auth" id="doctorAuth">
+        <div class="container">
+            <div class="auth-container">
+                <h1>Veterinarian Portal</h1>
+                <p class="subtitle">Join PetPal as a certified veterinarian</p>
+
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="register">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="doctorLoginForm" class="doctor-auth-form active">
+                    <h2>Vet Login</h2>
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn-primary btn-large" style="width: 100%;">Login</button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="doctorRegisterForm" class="doctor-auth-form">
+                    <h2>Vet Registration</h2>
+                    <div class="form-group">
+                        <label for="regName">Full Name *</label>
+                        <input type="text" id="regName" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email *</label>
+                        <input type="email" id="regEmail" required placeholder="Enter email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhone">Phone Number *</label>
+                        <input type="tel" id="regPhone" required placeholder="Enter phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="regSpecialty">Specialty *</label>
+                        <select id="regSpecialty" required>
+                            <option value="">Select specialty</option>
+                            <option value="Small Animals">Small Animals</option>
+                            <option value="Exotic Pets">Exotic Pets</option>
+                            <option value="General Practice">General Practice</option>
+                            <option value="Surgery">Surgery</option>
+                            <option value="Dermatology">Dermatology</option>
+                            <option value="Cardiology">Cardiology</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="regQualification">Qualification *</label>
+                        <input type="text" id="regQualification" required placeholder="e.g., BVSc, MVSc">
+                    </div>
+                    <div class="form-group">
+                        <label for="regExperience">Years of Experience *</label>
+                        <input type="number" id="regExperience" required placeholder="e.g., 10" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="regFee">Consultation Fee (₹) *</label>
+                        <input type="number" id="regFee" required placeholder="e.g., 500" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="regClinic">Clinic/Hospital Name *</label>
+                        <input type="text" id="regClinic" required placeholder="Enter clinic name">
+                    </div>
+                    <div class="form-group">
+                        <label for="regAddress">Clinic Address *</label>
+                        <textarea id="regAddress" required placeholder="Enter complete clinic address"
+                            rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Password *</label>
+                        <input type="password" id="regPassword" required placeholder="Create a password" minlength="6">
+                    </div>
+                    <button type="submit" class="btn-primary btn-large" style="width: 100%;">Register as
+                        Veterinarian</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor Dashboard (shown if logged in) -->
+    <div class="doctor-dashboard" id="doctorDashboard" style="display: none;">
+        <div class="container">
+            <div class="dashboard-header">
+                <div>
+                    <h1>Welcome, <span id="doctorName">Doctor</span>!</h1>
+                    <p class="subtitle">Manage your professional profile</p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-info">
+                        <h3 id="avgRating">0.0</h3>
+                        <p>Average Rating</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-info">
+                        <h3 id="totalReviews">0</h3>
+                        <p>Total Reviews</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <h3 id="totalConsultations">0</h3>
+                        <p>Consultations</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="profile-section">
+                <h2>Your Profile</h2>
+                <div class="profile-card" id="profileCard">
+                    <!-- Profile details will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="reviews-section">
+                <h2>Customer Reviews</h2>
+                <div class="reviews-list" id="reviewsList">
+                    <p class="empty-message">No reviews yet</p>
+                </div>
+            </div>
+
+            <!-- Consultations Section -->
+            <div class="consultations-section" style="margin-top: 30px;">
+                <h2>📅 My Consultations</h2>
+                <div class="consultations-list" id="consultationsList">
+                    <p class="empty-message">Loading consultations...</p>
+                </div>
+            </div>
+
+            <!-- WhatsApp Notifications Section -->
+            <div class="whatsapp-section" id="whatsappSection" style="margin-top: 30px;">
+                <!-- WhatsApp setup will be injected here by whatsapp-setup.js -->
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/api-config.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/whatsapp-setup.js"></script>
+    <script src="js/doctor.js"></script>
+</body>
+
+</html>

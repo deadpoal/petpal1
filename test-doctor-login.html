@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Login Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧪 Doctor Login Test</h1>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" value="testdoc@test.com" placeholder="Enter email">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" value="test123" placeholder="Enter password">
+        </div>
+
+        <button onclick="testLogin()">Test Login</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script src="js/api-config.js"></script>
+    <script>
+        async function testLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'info';
+            resultDiv.innerHTML = '⏳ Testing login...';
+
+            console.log('=== DOCTOR LOGIN TEST ===');
+            console.log('Email:', email);
+            console.log('Password:', password);
+            console.log('API Base URL:', API_CONFIG.BASE_URL);
+
+            try {
+                // Test 1: Check if backend is running
+                resultDiv.innerHTML += '<br>📡 Checking backend connection...';
+
+                const testResponse = await fetch(API_CONFIG.BASE_URL + '/consultations/doctors');
+                console.log('Backend test response:', testResponse.status);
+
+                if (!testResponse.ok) {
+                    throw new Error('Backend not responding. Make sure npm start is running!');
+                }
+
+                resultDiv.innerHTML += '<br>✅ Backend is running';
+
+                // Test 2: Try login
+                resultDiv.innerHTML += '<br>🔐 Attempting login...';
+
+                const response = await AuthAPI.doctorLogin(email, password);
+
+                console.log('Login response:', response);
+
+                if (response && response.success) {
+                    resultDiv.className = 'success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ LOGIN SUCCESSFUL!</strong><br><br>
+                        <strong>Doctor Details:</strong><br>
+                        Name: ${response.data.name}<br>
+                        Email: ${response.data.email}<br>
+                        Phone: ${response.data.phone}<br>
+                        Specialization: ${response.data.specialization}<br><br>
+                        <strong>Token saved to localStorage</strong><br><br>
+                        <pre>${JSON.stringify(response, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.className = 'error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ LOGIN FAILED</strong><br><br>
+                        ${response.message || 'Unknown error'}<br><br>
+                        <pre>${JSON.stringify(response, null, 2)}</pre>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Login error:', error);
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = `
+                    <strong>❌ ERROR</strong><br><br>
+                    ${error.message}<br><br>
+                    <strong>Possible causes:</strong><br>
+                    1. Backend server not running (run: npm start)<br>
+                    2. Wrong email/password<br>
+                    3. CORS issue<br>
+                    4. Network error<br><br>
+                    <strong>Full error:</strong><br>
+                    <pre>${error.stack}</pre>
+                `;
+            }
+        }
+
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            console.log('Page loaded. Ready to test.');
+            console.log('Click "Test Login" button or it will auto-test in 2 seconds...');
+            setTimeout(() => {
+                console.log('Auto-testing login...');
+                testLogin();
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>

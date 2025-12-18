@@ -1,0 +1,3 @@
+@echo off
+echo Opening PetPal Website...
+start index.html

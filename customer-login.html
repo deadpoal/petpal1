@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Login - PetPal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/doctor.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PetPal</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="doctor-auth" style="display: block;">
+        <div class="container">
+            <div class="auth-container">
+                <h1>Welcome to PetPal</h1>
+                <p class="subtitle">Your trusted companion for all pet needs</p>
+
+                <!-- Login Form (Default) -->
+                <form id="customerLoginForm" class="doctor-auth-form">
+                    <h2>Customer Sign In</h2>
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" required placeholder="your.email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn-primary btn-large" style="width: 100%;">Sign In</button>
+                    <button type="button" id="showRegisterForm" class="btn-secondary btn-large"
+                        style="width: 100%; margin-top: 1rem;">Create Account</button>
+                </form>
+
+                <!-- Register Form (Hidden) -->
+                <form id="customerRegisterForm" class="doctor-auth-form" style="display: none;">
+                    <h2>Create Account</h2>
+                    <div class="form-group">
+                        <label for="regName">Full Name *</label>
+                        <input type="text" id="regName" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email Address *</label>
+                        <input type="email" id="regEmail" required placeholder="your.email@example.com"
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Enter valid email">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhone">Phone Number</label>
+                        <input type="tel" id="regPhone" placeholder="+91 98765 43210">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Password *</label>
+                        <input type="password" id="regPassword" required placeholder="Minimum 6 characters"
+                            minlength="6">
+                    </div>
+                    <button type="submit" class="btn-primary btn-large" style="width: 100%;">Create Account</button>
+                    <button type="button" id="showLoginForm" class="btn-secondary btn-large"
+                        style="width: 100%; margin-top: 1rem;">Back to Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api-config.js?v=1002"></script>
+    <script src="js/customer-auth.js?v=1002"></script>
+
+</body>
+
+</html>
